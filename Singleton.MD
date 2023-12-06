@@ -63,3 +63,15 @@ int main() {
 </p>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/watch?v=PhLhNTey1Hk" frameborder="0" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=PhLhNTey1Hk" frameborder="0" allowfullscreen></iframe>
+
+# Tham khảo
+
+1. [Singleton Design Pattern](https://www.youtube.com/watch?v=hUE_j6q0LTQ&list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc&index=6)
+
+<span style="color: blue;">Cảm ơn các bạn đã đọc bài viết, tài liệu được mình tổng hợp khi tự học, có gì còn thiếu sót hãy thông cảm cho mình nha. Good bye, see yaaaaa !</span>
+
+<p align="center">
+  <img src="https://www.troublefreepool.com/media/hello-gif.3474/full" />
+</p>
