@@ -1,80 +1,88 @@
+// C++ program to demonstrate factory method design pattern
 #include <iostream>
 
-#include "string"
+using namespace std;
 
-class Singleton {
-   public:
-    // Static method to access the singleton instance
-    static Singleton& getInstance() {
-        // If the instance doesn't exist, create it
-        if (!instance) {
-            instance = new Singleton();
-        }
-        return *instance;
-    }
-
-    // Public method to perform some operation
-    void doSomething() {
-        std::cout << "Singleton is doing sth..." << std::endl;
-    }
-
-    // Delete the copy constructor and assignment operator
-    Singleton(const Singleton&) = delete;
-    Singleton& operator=(const Singleton&) = delete;
-
-   private:
-    // Private constructor to prevent external instantiation
-    Singleton() {
-        std::cout << "Singleton instance created (constructor)." << std::endl;
-    }
-
-    // Private destructor to prevent external deletion
-    ~Singleton() {
-        std::cout << "Singleton instance destroyed (destructor)." << std::endl;
-    }
-
-    // Private static instance variable
-    static Singleton* instance;
+enum VehicleType {
+    VT_TwoWheeler,
+    VT_ThreeWheeler,
+    VT_FourWheeler,
+    VT_FiveWheeler
 };
 
+// Library classes
 class Vehicle {
-   private:
-    Vehicle() {
-        std::cout << "Vehicle instance created (constructor)." << std::endl;
-    }
-    ~Vehicle() {
-        std::cout << "Vehicle instance destroyed (destructor)." << std::endl;
-    }
-
    public:
-    static Vehicle& getInstance() {
-        if (!instance) {
-            std::cout << "step 1" << std::endl;
-            instance = new Vehicle();
-        }
-        return *instance;
-    }
-    void doSomething() {
-        std::cout << "Vehicle is doing sth..." << std::endl;
-    }
-    Vehicle(const Vehicle&) = delete;
-    Vehicle& operator=(const Vehicle&) = delete;
-
-    static Vehicle* instance;
+    virtual void printVehicleInfo() = 0;
+    virtual ~Vehicle() {}
 };
 
-// Initialize the static instance variable to nullptr
-Singleton* Singleton::instance = nullptr;
-Vehicle* Vehicle::instance = nullptr;
+class TwoWheeler : public Vehicle {
+   public:
+    void printVehicleInfo() {
+        cout << "I am two wheeler" << endl;
+    }
+};
 
+class ThreeWheeler : public Vehicle {
+   public:
+    void printVehicleInfo() {
+        cout << "I am three wheeler" << endl;
+    }
+};
+
+class FourWheeler : public Vehicle {
+   public:
+    void printVehicleInfo() {
+        cout << "I am four wheeler" << endl;
+    }
+};
+
+class VehicleFactory {
+   public:
+    Vehicle* build(VehicleType vehicleType) {
+        if (vehicleType == VT_TwoWheeler)
+            return new TwoWheeler();
+        else if (vehicleType == VT_ThreeWheeler)
+            return new ThreeWheeler();
+        else if (vehicleType == VT_FourWheeler)
+            return new FourWheeler();
+        else
+            return nullptr;
+    }
+};
+
+class Client {
+   public:
+    Client() { pVehicle = nullptr; }
+
+    void BuildVehicle(VehicleType vehicleType) {
+        VehicleFactory* vf = new VehicleFactory();
+        pVehicle = vf->build(vehicleType);
+
+        delete vf;
+    }
+
+    ~Client() {
+        if (pVehicle) {
+            delete pVehicle;
+            pVehicle = NULL;
+        }
+    }
+
+    Vehicle* getVehicle() { return pVehicle; }
+
+   private:
+    Vehicle* pVehicle;
+};
+
+// Driver program
 int main() {
-    // Access the Singleton instance
-    // Singleton& obj_singleton = Singleton::getInstance();
-    Vehicle& obj_vehicle = Vehicle::getInstance();
+    Client* pClient = new Client();
 
-    // Use the Singleton instance
-    // obj_singleton.doSomething();
-    obj_vehicle.doSomething();
+    pClient->BuildVehicle(VT_TwoWheeler);
+    pClient->getVehicle()->printVehicleInfo();
 
+    delete pClient;
     return 0;
 }
